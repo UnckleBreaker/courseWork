@@ -1,4 +1,4 @@
-package com.example.coursework.model.episode
+package com.example.data.api.models.episode
 
 data class Result(
     val air_date: String,

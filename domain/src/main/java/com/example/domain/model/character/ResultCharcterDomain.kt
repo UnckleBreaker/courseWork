@@ -1,8 +1,8 @@
-package com.example.coursework.model.character
+package com.example.domain.model.character
 
 import java.io.File
 
-data class Result(
+data class ResultCharcterDomain(
     val created: String,
     val episode: List<String>,
     val gender: String,
@@ -13,5 +13,6 @@ data class Result(
     val origin: Origin,
     val species: String,
     val status: String,
+    val type: String,
     val url: String
 )

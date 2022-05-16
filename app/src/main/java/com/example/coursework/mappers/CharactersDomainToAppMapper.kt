@@ -8,9 +8,20 @@ object CharactersDomainToAppMapper : DomainToAppMapper<ModelCharacterDomain, Mod
 
     override fun map(from: ModelCharacterDomain): ModelCharacterApp {
         return from.let {
-            ModelCharacterApp(Info(it.info.next),results = it.results.map{
-                Result(it.created,it.episode,it.gender, it.id,it.image,Location(it.location.name,it.location.url),
-                    it.name,Origin(it.origin.name,it.origin.url),it.species,it.status,it.url)
+            ModelCharacterApp(Info(it.info?.next), results = it.results.map {
+                ResultCharacter(
+                    it.created,
+                    it.episode,
+                    it.gender,
+                    it.id,
+                    it.image,
+                    Location(it.location.name, it.location.url),
+                    it.name,
+                    Origin(it.origin.name, it.origin.url),
+                    it.species,
+                    it.status,
+                    it.url
+                )
             })
         }
     }

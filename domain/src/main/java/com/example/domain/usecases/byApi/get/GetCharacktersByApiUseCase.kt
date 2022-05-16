@@ -1,4 +1,4 @@
-package com.example.domain.usecases.byApi
+package com.example.domain.usecases.byApi.get
 
 import com.example.domain.repositories.ApiRepository
 

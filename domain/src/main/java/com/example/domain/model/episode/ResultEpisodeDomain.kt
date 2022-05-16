@@ -1,6 +1,6 @@
 package com.example.domain.model.episode
 
-data class Result(
+data class ResultEpisodeDomain(
     val air_date: String,
     val characters: List<String>,
     val created: String,

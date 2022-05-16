@@ -3,20 +3,42 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/swipeLayout"
+    android:id="@+id/swipeLayout_episode"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/teal_700">
+        android:background="@color/white">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycler_episodes"
-            android:layout_margin="@dimen/standart_margine">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/progress_bar_episode"
+                android:layout_height="wrap_content">
+
+            </ProgressBar>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_episodes">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <include layout="@layout/fragments_load_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/error_layout_episode"
+                android:visibility="invisible">
+            </include>
+
+        </FrameLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

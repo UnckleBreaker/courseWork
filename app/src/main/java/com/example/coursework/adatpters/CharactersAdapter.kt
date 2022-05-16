@@ -6,14 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.coursework.R
 import com.example.coursework.adatpters.viewholders.CharacterViewHolder
-import com.example.coursework.model.character.Result
+import com.example.coursework.listeners.CharacterClickListener
+import com.example.coursework.model.character.ResultCharacter
 
-class CharactersAdapter : ListAdapter<Result, CharacterViewHolder>(ItemDiffCallback()) {
+class CharactersAdapter(val listener:CharacterClickListener) : ListAdapter<ResultCharacter, CharacterViewHolder>(CharacterDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         CharacterViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_character, parent, false)
+                .inflate(R.layout.item_character, parent, false),listener
         )
 
 
@@ -23,15 +24,12 @@ class CharactersAdapter : ListAdapter<Result, CharacterViewHolder>(ItemDiffCallb
 
 }
 
-private class ItemDiffCallback : DiffUtil.ItemCallback<Result>() {
-    override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
+private class CharacterDiffCallback : DiffUtil.ItemCallback<ResultCharacter>() {
+    override fun areItemsTheSame(oldItem: ResultCharacter, newItem: ResultCharacter): Boolean {
         return oldItem== newItem
     }
 
-    override fun areContentsTheSame(
-        oldItem: Result,
-        newItem: Result
-    ): Boolean {
+    override fun areContentsTheSame(oldItem: ResultCharacter, newItem: ResultCharacter ): Boolean {
         return oldItem.id == newItem.id
     }
 }

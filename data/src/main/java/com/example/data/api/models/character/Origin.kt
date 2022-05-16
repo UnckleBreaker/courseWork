@@ -1,4 +1,4 @@
-package com.example.data.models.character
+package com.example.data.api.models.character
 
 data class Origin(
     val name: String,
