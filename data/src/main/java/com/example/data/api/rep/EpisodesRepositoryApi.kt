@@ -10,4 +10,6 @@ interface EpisodesRepositoryApi {
     fun getSomeEpisodes(ids:String) : Single<List<Result>>
 
     fun findEpisodes(search: String): Single<ResponceEpisode>
+
+    fun filterEpisodes(name: String, episode: String):Single<ResponceEpisode>
 }

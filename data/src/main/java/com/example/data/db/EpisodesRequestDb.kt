@@ -22,4 +22,8 @@ class EpisodesRequestDb(val context: Context) :EpisodesRepositoryDb {
     override fun findEpisodes(search: String): Single<List<EntityEpisode>> {
         return AppDataBase.getDataBase(context).episodesDao().findEpisodes(search)
     }
+
+    override fun filterEpisodes(name: String, episode: String): Single<List<EntityEpisode>> {
+        return AppDataBase.getDataBase(context).episodesDao().filterEpisodes(name, episode)
+    }
 }

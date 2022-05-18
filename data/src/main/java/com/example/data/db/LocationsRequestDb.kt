@@ -21,4 +21,12 @@ class LocationsRequestDb(val context: Context) : LocationsRepositoryDb {
     override fun findLocations(search: String): Single<List<EntityLocation>>{
       return  AppDataBase.getDataBase(context).locationsDao().findLocations(search)
     }
+
+    override fun filterLocations(
+        name: String,
+        type: String,
+        demension: String
+    ): Single<List<EntityLocation>> {
+        return  AppDataBase.getDataBase(context).locationsDao().filterLocations(name, type, demension)
+    }
 }

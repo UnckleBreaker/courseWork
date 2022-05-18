@@ -13,4 +13,6 @@ interface EpisodesRepositoryDb {
     fun UpdateEpisodes(responce: EntityEpisode)
 
     fun findEpisodes(search:String) : Single<List<EntityEpisode>>
+
+    fun filterEpisodes(name: String, episode: String): Single<List<EntityEpisode>>
 }

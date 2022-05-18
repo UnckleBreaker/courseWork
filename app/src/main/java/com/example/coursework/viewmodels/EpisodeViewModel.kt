@@ -1,14 +1,15 @@
 package com.example.coursework.viewmodels
 
 import android.content.Context
-import android.net.ConnectivityManager
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.coursework.mappers.EpisodesDomainToAppMapper
 import com.example.coursework.model.episode.ModelEpisodeApp
+import com.example.domain.usecases.byApi.filter.FilterEpisodesByApiUseCase
 import com.example.domain.usecases.byApi.find.FindEpisodesByApiUseCase
 import com.example.domain.usecases.byApi.get.GetEpisodesByApiUseCase
+import com.example.domain.usecases.byDb.filter.FilterEpisodesByDbiUseCase
 import com.example.domain.usecases.byDb.find.FindEpisodesByDbUseCase
 import com.example.domain.usecases.byDb.get.GetEpisodesByDbUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,7 +20,9 @@ class EpisodeViewModel(
     val getEpisodesUseCase: GetEpisodesByApiUseCase,
     val findEpisodesByApiUseCase: FindEpisodesByApiUseCase,
     val getEpisodesByDbUseCase: GetEpisodesByDbUseCase,
-    val findEpisodesByDbUseCase: FindEpisodesByDbUseCase
+    val findEpisodesByDbUseCase: FindEpisodesByDbUseCase,
+    val filterEpisodesByApiUseCase: FilterEpisodesByApiUseCase,
+    val filterEpisodesByDbiUseCase: FilterEpisodesByDbiUseCase
 ) : ViewModel() {
 
     val data = MutableLiveData<ModelEpisodeApp>()
@@ -27,8 +30,8 @@ class EpisodeViewModel(
     val cdisposable = CompositeDisposable()
     var error = MutableLiveData<String>()
 
-    fun get(context: Context) {
-        if(isConnected(context)){
+    fun get(isConnected: Boolean) {
+        if(isConnected){
             Log.d("EpisodeViewModel", "get: by api get ")
             val disposable=  getEpisodesUseCase.execute()
                 .map { EpisodesDomainToAppMapper.map(it) }
@@ -58,8 +61,8 @@ class EpisodeViewModel(
         isLoading.postValue(false)
     }
 
-    fun filterData(newText: String,context: Context) {
-        if(isConnected(context)){
+    fun findData(newText: String, isConnected: Boolean) {
+        if(isConnected){
             Log.d("EpisodeViewModel", "get: by api filter ")
             isLoading.postValue(true)
             val disposable= findEpisodesByApiUseCase.execute(newText)
@@ -86,8 +89,24 @@ class EpisodeViewModel(
         cdisposable.clear()
     }
 
-    private fun isConnected(context: Context): Boolean {
-        val connectivityManager =context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.activeNetworkInfo!!.isConnected;
+
+    fun filterData(connected: Boolean, name: String, episode: String) {
+        if(connected){
+            isLoading.postValue(true)
+            val disposable =filterEpisodesByApiUseCase.execute(name,episode)
+                .map { EpisodesDomainToAppMapper.map(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ handleData(it) }, { handleError(it,"bd") })
+            cdisposable.add(disposable)
+        }else{
+            isLoading.postValue(true)
+            val disposable =filterEpisodesByDbiUseCase.execute(name,episode)
+                .map { EpisodesDomainToAppMapper.map(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ handleData(it) }, { handleError(it,"bd") })
+            cdisposable.add(disposable)
+        }
     }
 }

@@ -28,9 +28,7 @@ class CharactersRequestDb(val context: Context) : CharactersRepositoryDb {
         gender: String,
         type: String
     ): Single<List<EntityCharacter>> {
-        if(spicies!="" && type!=""){
-            return AppDataBase.getDataBase(context).charactersDao().filterCharactersType(status, spicies, gender, type)
-        }else
-            return AppDataBase.getDataBase(context).charactersDao().filterCharacters(status, type)
+        return AppDataBase.getDataBase(context).charactersDao()
+            .filterCharactersType(status, spicies, gender, type)
     }
 }

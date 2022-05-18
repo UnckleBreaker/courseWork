@@ -1,11 +1,9 @@
 package com.example.coursework.baseFragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
@@ -15,15 +13,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.adatpters.EpisodeAdapter
-import com.example.coursework.dialogFilters.DialogFilterCharacters
 import com.example.coursework.dialogFilters.DialogFilterEpisodes
 import com.example.coursework.listeners.EpisodeClickListener
 import com.example.coursework.listeners.dialog.DialogEpisodesListener
+import com.example.coursework.service.CheckState
 import com.example.coursework.viewmodels.EpisodeViewModel
 import com.example.coursework.viewmodels.factories.EpisodesViewModelFactory
-import kotlinx.android.synthetic.main.fragment_characters.*
 import kotlinx.android.synthetic.main.fragment_episodes.*
-import kotlinx.android.synthetic.main.fragment_locations.*
 import kotlinx.android.synthetic.main.fragments_load_error.*
 
 class EpisodesFragment : Fragment(R.layout.fragment_episodes),DialogEpisodesListener {
@@ -44,7 +40,7 @@ class EpisodesFragment : Fragment(R.layout.fragment_episodes),DialogEpisodesList
         vm = ViewModelProvider(this, EpisodesViewModelFactory(requireContext())).get(
             EpisodeViewModel::class.java)
         checkVisibility()
-        vm.get(requireContext())
+        vm.get(CheckState.isConnected(requireContext()))
         vm.data.observe(viewLifecycleOwner, Observer {
             itemAdapter.submitList(it.results)
             error_layout_episode.visibility=View.INVISIBLE
@@ -55,7 +51,7 @@ class EpisodesFragment : Fragment(R.layout.fragment_episodes),DialogEpisodesList
         })
 
         swipeLayout_episode.setOnRefreshListener {
-            vm.get(requireContext())
+            vm.get(CheckState.isConnected(requireContext()))
             swipeLayout_episode.isRefreshing = false
         }
         float_filter_episodes.setOnClickListener{
@@ -85,14 +81,14 @@ class EpisodesFragment : Fragment(R.layout.fragment_episodes),DialogEpisodesList
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText!=null && newText != "")
-                    vm.filterData(newText,requireContext())
-                else vm.get(requireContext())
+                    vm.findData(newText, CheckState.isConnected(requireContext()))
+                else vm.get(CheckState.isConnected(requireContext()))
                 return true
             }
         })
     }
 
     override fun selected(name: String, episode: String) {
-        Log.d("EpisodesFragment", "selected: ")
+        vm.filterData(CheckState.isConnected(requireContext()),name,episode)
     }
 }

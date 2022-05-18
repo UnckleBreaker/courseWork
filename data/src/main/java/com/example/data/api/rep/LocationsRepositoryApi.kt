@@ -10,4 +10,6 @@ interface LocationsRepositoryApi {
     fun getOneLocation(id:String): Single<Result>
 
     fun findLocations(search:String) : Single<ResponceLocations>
+
+    fun filterLocations(name: String, type: String, demension: String): Single<ResponceLocations>
 }

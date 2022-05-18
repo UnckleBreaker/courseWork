@@ -22,4 +22,9 @@ class EpisodesRequest() :EpisodesRepositoryApi {
         return ApiBuilder.retrofitBuilder(Const.baseUrl)
             .create(EpisodesApiService::class.java).findEpisode(search)
     }
+
+    override fun filterEpisodes(name: String, episode: String): Single<ResponceEpisode> {
+        return ApiBuilder.retrofitBuilder(Const.baseUrl)
+            .create(EpisodesApiService::class.java).filterEpisode(name,episode)
+    }
 }

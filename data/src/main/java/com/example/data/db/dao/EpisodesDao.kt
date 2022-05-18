@@ -19,4 +19,6 @@ interface EpisodesDao {
 
     @Query("SELECT * FROM entity_episode_result WHERE name LIKE :search ")
     fun findEpisodes(search:String): Single<List<EntityEpisode>>
+    @Query("SELECT * FROM entity_episode_result WHERE (:name IS NULL OR name LIKE '%' || :name || '%' AND (:episode IS NULL OR episode LIKE '%' || :episode || '%'))")
+    fun filterEpisodes(name: String, episode: String): Single<List<EntityEpisode>>
 }

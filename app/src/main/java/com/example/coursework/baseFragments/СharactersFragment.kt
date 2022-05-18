@@ -17,6 +17,7 @@ import com.example.coursework.R
 import com.example.coursework.adatpters.CharactersAdapter
 import com.example.coursework.listeners.CharacterClickListener
 import com.example.coursework.listeners.dialog.DialogCharactersListener
+import com.example.coursework.service.CheckState
 import com.example.coursework.viewmodels.CharactersViewModel
 import com.example.coursework.viewmodels.factories.CharactersViewModelFactory
 import kotlinx.android.synthetic.main.fragment_characters.*
@@ -39,7 +40,7 @@ class СharactersFragment : Fragment(R.layout.fragment_characters), DialogCharac
         initRecycle()
         vm = ViewModelProvider(this, CharactersViewModelFactory(requireContext())).get(CharactersViewModel::class.java)
         checkVisibility()
-        vm.get(requireContext())
+        vm.get(CheckState.isConnected(requireContext()))
         vm.data.observe(viewLifecycleOwner, Observer {
             itemAdapter.submitList(it.results)
             error_layout.visibility = View.INVISIBLE
@@ -49,7 +50,7 @@ class СharactersFragment : Fragment(R.layout.fragment_characters), DialogCharac
             error_text.text = it
         })
         swipeLayout_characters.setOnRefreshListener {
-            vm.get(requireContext())
+            vm.get(CheckState.isConnected(requireContext()))
             swipeLayout_characters.isRefreshing = false
         }
         float_filter.setOnClickListener {
@@ -81,15 +82,14 @@ class СharactersFragment : Fragment(R.layout.fragment_characters), DialogCharac
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != "" && newText != null) {
-                    vm.findData(newText, requireContext())
-                } else vm.get(requireContext())
+                    vm.findData(newText, CheckState.isConnected(requireContext()))
+                } else vm.get(CheckState.isConnected(requireContext()))
                 return true
             }
         })
     }
 
     override fun selected(status: String, spicies: String, gender: String, type: String) {
-        Log.d("СharactersFragment", "selected: $status $spicies $gender $type ")
-        vm.filterData(status, spicies, gender, type, requireContext())
+        vm.filterData(status, spicies, gender, type,CheckState.isConnected(requireContext()))
     }
 }

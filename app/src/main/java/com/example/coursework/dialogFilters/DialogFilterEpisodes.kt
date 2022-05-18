@@ -26,7 +26,7 @@ class DialogFilterEpisodes: DialogFragment(R.layout.dialog_filters_episodes) {
         val view = inflater.inflate(R.layout.dialog_filters_episodes,container,false)
         val item = requireArguments().getSerializable(dialog_filter_key) as DialogEpisodesListener
         view.btn_apply_episode.setOnClickListener {
-            val name =view.textInputName.text.toString()
+            val name =view.textInputEpisName.text.toString()
             val episode = view.textInputEpisode.text.toString()
             item.selected(name = name,episode = episode)
             dismiss()

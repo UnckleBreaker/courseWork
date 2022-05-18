@@ -16,4 +16,9 @@ interface LocationsApiService {
 
     @GET("api/location/?")
     fun findLocations(@Query("name") search: String): Single<ResponceLocations>
+
+    @GET("api/location/?")
+    fun filterLocations(@Query("name",) search: String,
+                        @Query("type",) type: String,
+                        @Query("dimension",) dimension: String): Single<ResponceLocations>
 }

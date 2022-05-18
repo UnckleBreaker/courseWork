@@ -31,8 +31,8 @@ class CharactersViewModel(
     var isLoading = MutableLiveData(true)
     val cdisposable =CompositeDisposable()
 
-    fun get(context: Context) {
-        if(isConnected(context)){
+    fun get(isConnected: Boolean) {
+        if(isConnected){
             val disposable =getCharacktersUseCase.execute()
                 .map { CharactersDomainToAppMapper.map(it) }
                 .subscribeOn(Schedulers.io())
@@ -63,8 +63,8 @@ class CharactersViewModel(
         isLoading.postValue(false)
     }
 
-    fun findData(newText: String, context: Context) {
-        if(isConnected(context)){
+    fun findData(newText: String, isConnected: Boolean) {
+        if(isConnected){
             isLoading.postValue(true)
             val disposable =findCharactersByApiUseCase.execute(newText)
                 .map { CharactersDomainToAppMapper.map(it) }
@@ -88,9 +88,9 @@ class CharactersViewModel(
         spicies: String,
         gender: String,
         type: String,
-        context: Context
+        isConnected: Boolean
     ) {
-        if(isConnected(context = context)){
+        if(isConnected){
             isLoading.postValue(true)
             val disposable =filterCharactersByApiUseCase.execute(status,spicies,gender,type)
                 .map { CharactersDomainToAppMapper.map(it) }
@@ -112,10 +112,5 @@ class CharactersViewModel(
     override fun onCleared() {
         super.onCleared()
         cdisposable.clear()
-    }
-
-    private fun isConnected(context: Context): Boolean {
-        val connectivityManager =context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.activeNetworkInfo!!.isConnected;
     }
 }

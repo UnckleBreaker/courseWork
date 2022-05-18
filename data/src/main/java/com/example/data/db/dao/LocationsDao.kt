@@ -17,4 +17,9 @@ interface LocationsDao {
 
     @Query("SELECT * FROM entity_location_result WHERE name LIKE :search ")
     fun findLocations(search:String): Single<List<EntityLocation>>
+
+    @Query("SELECT * FROM entity_location_result WHERE (:name IS NULL OR name LIKE '%' || :name || '%' AND (:type is NULL OR type LIKE '%' || :type || '%' AND (:demension IS NULL OR dimension LIKE '%' || :demension || '%' )))")
+    fun filterLocations(  name: String,
+                          type: String,
+                          demension: String): Single<List<EntityLocation>>
 }

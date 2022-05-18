@@ -1,7 +1,6 @@
 package com.example.coursework.baseFragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -14,14 +13,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.adatpters.LocationAdapter
+import com.example.coursework.dialogFilters.DialogFilterLocations
 import com.example.coursework.listeners.LocationItemClickListener
+import com.example.coursework.listeners.dialog.DialogLocationsListener
+import com.example.coursework.service.CheckState
 import com.example.coursework.viewmodels.LocationsViewModel
 import com.example.coursework.viewmodels.factories.LocationsViewModelFactory
-import kotlinx.android.synthetic.main.fragment_episodes.*
 import kotlinx.android.synthetic.main.fragment_locations.*
 import kotlinx.android.synthetic.main.fragments_load_error.*
 
-class LocationFragment : Fragment(R.layout.fragment_locations) {
+class LocationFragment : Fragment(R.layout.fragment_locations),DialogLocationsListener {
 
     lateinit var vm: LocationsViewModel
     val itemAdapter: LocationAdapter by lazy {
@@ -41,7 +42,7 @@ class LocationFragment : Fragment(R.layout.fragment_locations) {
             LocationsViewModel::class.java
         )
         checkVisibility()
-        vm.get(requireContext())
+        vm.get(CheckState.isConnected(requireContext()))
         vm.data.observe(viewLifecycleOwner, Observer {
             itemAdapter.submitList(it.results)
             error_layout_locations.visibility=View.INVISIBLE
@@ -52,8 +53,12 @@ class LocationFragment : Fragment(R.layout.fragment_locations) {
         })
 
         swipeLayout_locations.setOnRefreshListener {
-            vm.get(requireContext())
+            vm.get(CheckState.isConnected(requireContext()))
             swipeLayout_locations.isRefreshing = false
+        }
+        float_filter_locations.setOnClickListener {
+            DialogFilterLocations.newInstance(this)
+                .show(parentFragmentManager, DialogFilterLocations.dialog_filter_key)
         }
     }
 
@@ -81,11 +86,15 @@ class LocationFragment : Fragment(R.layout.fragment_locations) {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null && newText != "")
-                    vm.filterData(newText,requireContext())
-                else vm.get(requireContext())
+                    vm.findData(newText,CheckState.isConnected(requireContext()))
+                else vm.get(CheckState.isConnected(requireContext()))
                 return true
             }
         })
+    }
+
+    override fun selected(name: String, type: String, demension: String) {
+        vm.filterData(CheckState.isConnected(requireContext()),name,type,demension)
     }
 
 

@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.coursework.mappers.LocationsDomainToAppMapper
 import com.example.coursework.model.location.ModelLocationsApp
+import com.example.domain.usecases.byApi.filter.FilterLocationsByApiUseCase
 import com.example.domain.usecases.byApi.find.FindLocationsByApiUseCase
 import com.example.domain.usecases.byApi.get.GetLocationsByApiUseCase
+import com.example.domain.usecases.byDb.filter.FilterLocationsByDbiUseCase
 import com.example.domain.usecases.byDb.find.FindLocationsByDbUseCase
 import com.example.domain.usecases.byDb.get.GetLocationsByDbUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,7 +20,9 @@ class LocationsViewModel(
     val locationsUseCase: GetLocationsByApiUseCase,
     val findLocationsByApiUseCase: FindLocationsByApiUseCase,
     val getLocationsByDbUseCase: GetLocationsByDbUseCase,
-    val findLocationsByBdUseCase: FindLocationsByDbUseCase
+    val findLocationsByBdUseCase: FindLocationsByDbUseCase,
+    val filterLocationsByApiUseCase: FilterLocationsByApiUseCase,
+    val filterLocationsByDbiUseCase: FilterLocationsByDbiUseCase
 ) : ViewModel() {
 
     val data = MutableLiveData<ModelLocationsApp>()
@@ -26,8 +30,8 @@ class LocationsViewModel(
     val cdisposable =CompositeDisposable()
     var error = MutableLiveData<String>()
 
-    fun get(context: Context) {
-        if (isConnected(context)){
+    fun get(isConnected: Boolean) {
+        if (isConnected){
             val disposable = locationsUseCase.execute()
                 .map { LocationsDomainToAppMapper.map(it) }
                 .subscribeOn(Schedulers.io())
@@ -53,9 +57,9 @@ class LocationsViewModel(
         isLoading.postValue(false)
     }
 
-    fun filterData(newText: String,context: Context) {
+    fun findData(newText: String, isConnected: Boolean) {
 
-        if(isConnected(context)){
+        if(isConnected){
             isLoading.postValue(true)
             val disposable = findLocationsByApiUseCase.execute(newText)
                 .map { LocationsDomainToAppMapper.map(it) }
@@ -80,8 +84,21 @@ class LocationsViewModel(
         cdisposable.clear()
     }
 
-    private fun isConnected(context: Context): Boolean {
-        val connectivityManager =context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.activeNetworkInfo!!.isConnected;
+    fun filterData(connected: Boolean, name: String, type: String, demension: String) {
+        if(connected){
+            val disposable = filterLocationsByApiUseCase.execute(name,type,demension)
+                .map { LocationsDomainToAppMapper.map(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ handleData(it) }, { handleError(it) })
+            cdisposable.add(disposable)
+        }else{
+            val disposable = filterLocationsByDbiUseCase.execute(name,type,demension)
+                .map { LocationsDomainToAppMapper.map(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ handleData(it) }, { handleError(it) })
+            cdisposable.add(disposable)
+        }
     }
 }

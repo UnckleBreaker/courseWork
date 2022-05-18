@@ -16,4 +16,8 @@ interface EpisodesApiService {
 
     @GET("api/episode/?")
     fun findEpisode(@Query("name")search: String): Single<ResponceEpisode>
+
+    @GET("api/episode/?")
+    fun filterEpisode(@Query("name")search: String,
+                      @Query("episode")episode: String): Single<ResponceEpisode>
 }

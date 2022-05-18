@@ -22,4 +22,13 @@ class LocationsRequest : LocationsRepositoryApi {
         return ApiBuilder.retrofitBuilder(Const.baseUrl)
             .create(LocationsApiService::class.java).findLocations(search)
     }
+
+    override fun filterLocations(
+        name: String,
+        type: String,
+        demension: String
+    ): Single<ResponceLocations> {
+        return ApiBuilder.retrofitBuilder(Const.baseUrl)
+            .create(LocationsApiService::class.java).filterLocations(name,type,demension)
+    }
 }

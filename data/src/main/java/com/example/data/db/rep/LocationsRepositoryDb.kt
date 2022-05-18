@@ -12,4 +12,8 @@ interface LocationsRepositoryDb {
     fun UpdateLocations(responce: EntityLocation)
 
     fun findLocations(search:String) : Single<List<EntityLocation>>
+
+    fun filterLocations(name: String,
+                        type: String,
+                        demension: String): Single<List<EntityLocation>>
 }
