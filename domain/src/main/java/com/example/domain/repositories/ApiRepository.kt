@@ -24,9 +24,16 @@ interface ApiRepository  {
 
     fun findCharacters(search:String):Single<ModelCharacterDomain>
 
-    fun findCharactersDb(search:String):Single<ModelCharacterDomain>
-
     fun findEpisodes(search: String): Single<ModelEpisodeDomain>
 
     fun findLocations(search: String): Single<ModelLocationsDomain>
+
+    fun filterCharacters( status: String,
+                           spicies: String,
+                           gender: String,
+                           type: String,):Single<ModelCharacterDomain>
+
+//    fun filterEpisodes(search: String): Single<ModelEpisodeDomain>
+//
+//    fun filterLocations(search: String): Single<ModelLocationsDomain>
 }

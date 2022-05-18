@@ -18,13 +18,24 @@ class CharactersRequest : CharacterRepositoryApi {
     override fun getSomeCharacters(ids: String): Single<List<Result>> {
         return ApiBuilder.retrofitBuilder(Const.baseUrl)
             .create(CharacterApiService::class.java)
-            .getSomeCharacters(ids)
+            .getSomeCharacters(ids = ids)
     }
 
     override fun findCharacters(search: String): Single<ResponceCharacters> {
         return ApiBuilder.retrofitBuilder(Const.baseUrl)
             .create(CharacterApiService::class.java)
-            .findCharacters(search)
+            .findCharacters(search = search)
+    }
+
+    override fun filterCharacters(
+        status: String,
+        spicies: String,
+        gender: String,
+        type: String
+    ): Single<ResponceCharacters> {
+        return ApiBuilder.retrofitBuilder(Const.baseUrl)
+            .create(CharacterApiService::class.java)
+            .filterCharacters(status = status,species = spicies,type = type,gender = gender)
     }
 
 }

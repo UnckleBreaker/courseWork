@@ -7,8 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.app.mappers.CharactersDomainToAppMapper
 import com.example.coursework.model.character.ModelCharacterApp
+import com.example.domain.usecases.byApi.filter.FilterCharactersByApiUseCase
 import com.example.domain.usecases.byApi.find.FindCharactersByApiUseCase
 import com.example.domain.usecases.byApi.get.GetCharacktersByApiUseCase
+import com.example.domain.usecases.byDb.filter.FilterCharactersByDbUseCase
 import com.example.domain.usecases.byDb.find.FindCharactersByDbUseCase
 import com.example.domain.usecases.byDb.get.GetCharacktersByDbUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,9 +21,10 @@ class CharactersViewModel(
     val getCharacktersUseCase : GetCharacktersByApiUseCase,
     val findCharactersByApiUseCase: FindCharactersByApiUseCase,
     val getCharactersByDbuseCase: GetCharacktersByDbUseCase,
-    val findCharactersByDbUseCase: FindCharactersByDbUseCase
+    val findCharactersByDbUseCase: FindCharactersByDbUseCase,
+    val filterCharactersByApiUseCase: FilterCharactersByApiUseCase,
+    val filterCharactersByADbUseCase: FilterCharactersByDbUseCase
 ): ViewModel() {
-
 
     var data = MutableLiveData<ModelCharacterApp>()
     var error = MutableLiveData<String>()
@@ -50,15 +53,17 @@ class CharactersViewModel(
     }
 
     private fun handleError(it: Throwable) {
+        Log.d("CharactersViewModel", "handleError: $it")
         error.postValue(it.message)
     }
 
     private fun handleData(it: ModelCharacterApp) {
+        Log.d("CharactersViewModel", "handleData: $it")
         data.postValue(it)
         isLoading.postValue(false)
     }
 
-    fun filterData(newText: String,context: Context) {
+    fun findData(newText: String, context: Context) {
         if(isConnected(context)){
             isLoading.postValue(true)
             val disposable =findCharactersByApiUseCase.execute(newText)
@@ -77,6 +82,31 @@ class CharactersViewModel(
             cdisposable.add(disposable)
         }
 
+    }
+    fun filterData(
+        status: String,
+        spicies: String,
+        gender: String,
+        type: String,
+        context: Context
+    ) {
+        if(isConnected(context = context)){
+            isLoading.postValue(true)
+            val disposable =filterCharactersByApiUseCase.execute(status,spicies,gender,type)
+                .map { CharactersDomainToAppMapper.map(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ handleData(it) }, { handleError(it) })
+            cdisposable.add(disposable)
+        }else{
+            isLoading.postValue(true)
+            val disposable =filterCharactersByADbUseCase.execute(status,spicies,gender,type)
+                .map { CharactersDomainToAppMapper.map(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ handleData(it) }, { handleError(it) })
+            cdisposable.add(disposable)
+        }
     }
 
     override fun onCleared() {

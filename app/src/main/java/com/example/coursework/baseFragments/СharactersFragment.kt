@@ -1,6 +1,5 @@
 package com.example.coursework.baseFragments
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -13,15 +12,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.coursework.DialogFilter
+import com.example.coursework.dialogFilters.DialogFilterCharacters
 import com.example.coursework.R
 import com.example.coursework.adatpters.CharactersAdapter
 import com.example.coursework.listeners.CharacterClickListener
-import com.example.coursework.listeners.DialogCharactersListener
+import com.example.coursework.listeners.dialog.DialogCharactersListener
 import com.example.coursework.viewmodels.CharactersViewModel
 import com.example.coursework.viewmodels.factories.CharactersViewModelFactory
 import kotlinx.android.synthetic.main.fragment_characters.*
-import kotlinx.android.synthetic.main.fragment_locations.*
 import kotlinx.android.synthetic.main.fragments_load_error.*
 
 class СharactersFragment : Fragment(R.layout.fragment_characters), DialogCharactersListener {
@@ -55,8 +53,8 @@ class СharactersFragment : Fragment(R.layout.fragment_characters), DialogCharac
             swipeLayout_characters.isRefreshing = false
         }
         float_filter.setOnClickListener {
-            DialogFilter.newInstance(this)
-                .show(parentFragmentManager, DialogFilter.dialog_filter_key)
+            DialogFilterCharacters.newInstance(this)
+                .show(parentFragmentManager, DialogFilterCharacters.dialog_filter_key)
         }
     }
 
@@ -83,14 +81,15 @@ class СharactersFragment : Fragment(R.layout.fragment_characters), DialogCharac
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != "" && newText != null) {
-                    vm.filterData(newText, requireContext())
+                    vm.findData(newText, requireContext())
                 } else vm.get(requireContext())
                 return true
             }
         })
     }
 
-    override fun selected(alive: String, spicies: String, gender: String, type: String) {
-        Log.d("СharactersFragment", "selected: $alive $spicies $gender $type ")
+    override fun selected(status: String, spicies: String, gender: String, type: String) {
+        Log.d("СharactersFragment", "selected: $status $spicies $gender $type ")
+        vm.filterData(status, spicies, gender, type, requireContext())
     }
 }

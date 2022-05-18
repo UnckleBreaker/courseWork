@@ -11,4 +11,9 @@ interface CharacterRepositoryApi {
     fun getSomeCharacters(ids:String) : Single<List<Result>>
 
     fun findCharacters(search:String) : Single<ResponceCharacters>
+
+    fun filterCharacters( status: String,
+                           spicies: String,
+                           gender: String,
+                           type: String):Single<ResponceCharacters>
 }

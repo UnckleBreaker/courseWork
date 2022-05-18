@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.adatpters.EpisodeAdapter
+import com.example.coursework.dialogFilters.DialogFilterCharacters
+import com.example.coursework.dialogFilters.DialogFilterEpisodes
 import com.example.coursework.listeners.EpisodeClickListener
+import com.example.coursework.listeners.dialog.DialogEpisodesListener
 import com.example.coursework.viewmodels.EpisodeViewModel
 import com.example.coursework.viewmodels.factories.EpisodesViewModelFactory
 import kotlinx.android.synthetic.main.fragment_characters.*
@@ -23,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_episodes.*
 import kotlinx.android.synthetic.main.fragment_locations.*
 import kotlinx.android.synthetic.main.fragments_load_error.*
 
-class EpisodesFragment : Fragment(R.layout.fragment_episodes) {
+class EpisodesFragment : Fragment(R.layout.fragment_episodes),DialogEpisodesListener {
 
     lateinit var vm : EpisodeViewModel
     val itemAdapter: EpisodeAdapter by lazy {
@@ -55,6 +58,10 @@ class EpisodesFragment : Fragment(R.layout.fragment_episodes) {
             vm.get(requireContext())
             swipeLayout_episode.isRefreshing = false
         }
+        float_filter_episodes.setOnClickListener{
+                DialogFilterEpisodes.newInstance(this)
+                    .show(parentFragmentManager, DialogFilterEpisodes.dialog_filter_key)
+        }
     }
     private fun initRecycle() {
         recycler_episodes.layoutManager =  GridLayoutManager(requireContext(),2, RecyclerView.VERTICAL,false)
@@ -78,10 +85,14 @@ class EpisodesFragment : Fragment(R.layout.fragment_episodes) {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText!=null && newText != "")
-                    vm.filterData(newText)
+                    vm.filterData(newText,requireContext())
                 else vm.get(requireContext())
-                return false
+                return true
             }
         })
+    }
+
+    override fun selected(name: String, episode: String) {
+        Log.d("EpisodesFragment", "selected: ")
     }
 }

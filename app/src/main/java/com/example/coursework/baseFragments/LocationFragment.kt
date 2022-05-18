@@ -81,9 +81,9 @@ class LocationFragment : Fragment(R.layout.fragment_locations) {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null && newText != "")
-                    vm.filterData(newText)
+                    vm.filterData(newText,requireContext())
                 else vm.get(requireContext())
-                return false
+                return true
             }
         })
     }

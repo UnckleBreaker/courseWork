@@ -16,4 +16,10 @@ interface CharacterApiService {
 
     @GET("api/character/?")
     fun findCharacters(@Query("name") search: String): Single<ResponceCharacters>
+
+    @GET("api/character/?")
+    fun filterCharacters(@Query("status") status: String,
+                         @Query("species") species: String,
+                         @Query("type") type: String,
+                         @Query("gender") gender: String): Single<ResponceCharacters>
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:layout_width="match_parent"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeLayout_locations"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -25,6 +25,18 @@
                 android:id="@+id/progress_bar_location"
                 android:layout_height="wrap_content">
             </ProgressBar>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter"
+                android:id="@+id/float_filter_locations"
+                android:gravity="center"
+                android:layout_margin="15dp"
+                app:iconTint="@android:color/white"
+                app:icon="@drawable/ic_filter_foreground"
+                android:layout_gravity="bottom|right">
+            </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
             <include layout="@layout/fragments_load_error"
                 android:layout_width="match_parent"

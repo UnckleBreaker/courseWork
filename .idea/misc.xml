@@ -12,7 +12,10 @@
         <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/drawable/ic_search_foreground.xml" value="0.2361111111111111" />
         <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/drawable/splash_image.xml" value="0.1921875" />
         <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/layout/dialog_filter.xml" value="0.264" />
+        <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/layout/dialog_filter.xml" value="0.4" />
+        <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/layout/dialog_filter_cahracters.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/layout/dialog_filter_locations.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/layout/dialog_filters_episodes.xml" value="0.264" />
         <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/layout/fragment_characters.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/layout/fragment_details_character.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/Valery/AndroidStudioProjects/CourseWork/app/src/main/res/layout/fragment_details_episode.xml" value="0.23854166666666668" />

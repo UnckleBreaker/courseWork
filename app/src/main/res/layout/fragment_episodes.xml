@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:layout_width="match_parent"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeLayout_episode"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -28,6 +28,18 @@
                 android:id="@+id/recycler_episodes">
 
             </androidx.recyclerview.widget.RecyclerView>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter"
+                android:id="@+id/float_filter_episodes"
+                android:gravity="center"
+                android:layout_margin="15dp"
+                app:iconTint="@android:color/white"
+                app:icon="@drawable/ic_filter_foreground"
+                android:layout_gravity="bottom|right">
+            </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
             <include layout="@layout/fragments_load_error"
                 android:layout_width="match_parent"

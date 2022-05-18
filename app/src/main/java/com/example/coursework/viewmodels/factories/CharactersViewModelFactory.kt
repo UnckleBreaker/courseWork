@@ -9,8 +9,10 @@ import com.example.data.api.EpisodesRequest
 import com.example.data.api.LocationsRequest
 import com.example.data.db.CharactersRequestDb
 import com.example.data.repository.RepositoryImpl
+import com.example.domain.usecases.byApi.filter.FilterCharactersByApiUseCase
 import com.example.domain.usecases.byApi.find.FindCharactersByApiUseCase
 import com.example.domain.usecases.byApi.get.GetCharacktersByApiUseCase
+import com.example.domain.usecases.byDb.filter.FilterCharactersByDbUseCase
 import com.example.domain.usecases.byDb.find.FindCharactersByDbUseCase
 import com.example.domain.usecases.byDb.get.GetCharacktersByDbUseCase
 
@@ -24,10 +26,14 @@ class CharactersViewModelFactory(context: Context) :ViewModelProvider.Factory {
     val findCharactersByApiUseCase  by lazy(LazyThreadSafetyMode.NONE){ FindCharactersByApiUseCase(repository) }
     val getCharacktersByUseCase by lazy(LazyThreadSafetyMode.NONE){GetCharacktersByDbUseCase(repository)}
     val findCharactersByBdUseCase by lazy(LazyThreadSafetyMode.NONE){FindCharactersByDbUseCase(repository)}
+    val filterCharactersByApiUseCase by lazy(LazyThreadSafetyMode.NONE){FilterCharactersByApiUseCase(repository)}
+    val filterCharactersByADbUseCase by lazy(LazyThreadSafetyMode.NONE){FilterCharactersByDbUseCase(repository)}
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CharactersViewModel(getCharacktersUseCase = getCharacktersUseCase,
         findCharactersByApiUseCase = findCharactersByApiUseCase,getCharacktersByUseCase,
-        findCharactersByDbUseCase = findCharactersByBdUseCase) as T
+        findCharactersByDbUseCase = findCharactersByBdUseCase,
+        filterCharactersByADbUseCase = filterCharactersByADbUseCase,
+        filterCharactersByApiUseCase = filterCharactersByApiUseCase) as T
 
     }
 }

@@ -53,9 +53,9 @@ class RepositoryImpl(
        return episodeApi!!.getAllEpisodes()
             .map { EpisodeDatatoDomainMapper.map(it)
                 .also {it.results.forEach {
-                    episodesDb!!.InsertEpisodes(EpisodesToEntityMapper.map(it))
-                }
-                   } }
+                    episodesDb!!.InsertEpisodes(EpisodesToEntityMapper.map(it)) }
+                    }
+            }
 
 
     }
@@ -64,8 +64,8 @@ class RepositoryImpl(
         return locationApi!!.getAllLocations()
             .map { LocationsDataToDomainMapper.map(it)
                 .also { it.results.forEach {
-                    locationDb!!.InsertLocations(LocationsToEntityMapper.map(it))
-                } }}
+                    locationDb!!.InsertLocations(LocationsToEntityMapper.map(it)) } }
+            }
 
     }
 
@@ -95,6 +95,18 @@ class RepositoryImpl(
             CharactersDbDataToDomainMapper(context).map(it) }
     }
 
+    override fun findEpisodesDb(search: String): Single<ModelEpisodeDomain> {
+        return episodesDb!!.findEpisodes(search = search).map {
+            EpisodesEntityToDomain.map(it)
+        }
+    }
+
+    override fun findLocationsDb(search: String): Single<ModelLocationsDomain> {
+        return locationDb!!.findLocations(search = search).map {
+            LocationDbtoDomainMapper.map(it)
+        }
+    }
+
     override fun findEpisodes(search: String): Single<ModelEpisodeDomain> {
         return episodeApi!!.findEpisodes(search)
             .map { EpisodeDatatoDomainMapper.map(it) }
@@ -120,6 +132,39 @@ class RepositoryImpl(
         return locationDb!!.getAllLocations().map {
             LocationDbtoDomainMapper.map(it) }
     }
+    override fun filterCharacters(  status: String,
+                                    spicies: String,
+                                    gender: String,
+                                    type: String,): Single<ModelCharacterDomain> {
+        return characterApi!!.filterCharacters(status,spicies, gender, type).map {
+            CharactersDataToDomainMapper(context).map(it)
+        }
+    }
+//
+//    override fun filterEpisodes(search: String): Single<ModelEpisodeDomain> {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun filterLocations(search: String): Single<ModelLocationsDomain> {
+//        TODO("Not yet implemented")
+//    }
+
+    override fun filterCharactersDb(  status: String,
+                                      spicies: String,
+                                      gender: String,
+                                      type: String,): Single<ModelCharacterDomain> {
+        return characterDb!!.filterCharacters(status, spicies, gender, type).map {
+            CharactersDbDataToDomainMapper(context).map(it)
+        }
+    }
+
+//    override fun filterEpisodesDb(search: String): Single<ModelEpisodeDomain> {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun filterLocationsDb(search: String): Single<ModelLocationsDomain> {
+//        TODO("Not yet implemented")
+//    }
 
 
 }

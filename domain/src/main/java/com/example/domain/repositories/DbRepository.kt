@@ -12,4 +12,21 @@ interface DbRepository {
     fun getEpisodesByDb() : Single<ModelEpisodeDomain>
 
     fun getLocationsByDb() : Single<ModelLocationsDomain>
+
+    fun findCharactersDb(search:String):Single<ModelCharacterDomain>
+
+    fun findEpisodesDb(search:String):Single<ModelEpisodeDomain>
+
+    fun findLocationsDb(search:String):Single<ModelLocationsDomain>
+
+    fun filterCharactersDb( status: String,
+                             spicies: String,
+                             gender: String,
+                             type: String,):Single<ModelCharacterDomain>
+
+//    fun filterEpisodesDb(search:String):Single<ModelEpisodeDomain>
+//
+//    fun filterLocationsDb(search:String):Single<ModelLocationsDomain>
+
+
 }
