@@ -29,8 +29,6 @@ import com.example.domain.model.locations.ModelLocationsDomain
 import com.example.domain.model.locations.ResultLocationsDomain
 import com.example.domain.repositories.DbRepository
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class RepositoryImpl(
     val context: Context,
@@ -53,7 +51,6 @@ class RepositoryImpl(
         character.forEach {  characterDb!!.InsertCharacters(CharactersDataToEntityMapper(context).map(it))}
     }
 
-
     override fun getEpisodes(): Single<ModelEpisodeDomain> {
         return episodeApi!!.getAllEpisodes()
             .map { EpisodeDatatoDomainMapper.map(it).also { saveEpisodes(it.results)}
@@ -62,20 +59,16 @@ class RepositoryImpl(
 
     override fun getLocations(): Single<ModelLocationsDomain> {
         return locationApi!!.getAllLocations()
-            .map {
-                LocationsDataToDomainMapper.map(it)
+            .map { LocationsDataToDomainMapper.map(it)
                     .also {
-                        it.results.forEach {
-                            locationDb!!.InsertLocations(LocationsToEntityMapper.map(it))
-                        }
+                        it.results.forEach { locationDb!!.InsertLocations(LocationsToEntityMapper.map(it)) }
                     }
             }
-
     }
 
     override fun getSomeEpisodes(ids: String): Single<List<ResultEpisodeDomain>> {
         return episodeApi!!.getSomeEpisodes(ids)
-            .map { OneEpisodeDatatoDomainMapper.map(it) .also { (saveEpisodes(it)) }}
+            .map { OneEpisodeDatatoDomainMapper.map(it)}
     }
 
     override fun getSomeCharacters(ids: String): Single<List<ResultCharcterDomain>> {

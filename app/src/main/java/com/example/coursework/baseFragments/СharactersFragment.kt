@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
+import android.widget.AbsListView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
@@ -60,7 +61,8 @@ class СharactersFragment : Fragment(R.layout.fragment_characters), DialogCharac
     }
 
     private fun initRecycle() {
-        recycler.layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
+        recycler.layoutManager =
+            GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
         recycler.itemAnimator = null
         recycler.adapter = itemAdapter
     }

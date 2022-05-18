@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.app.mappers.CharactersDomainToAppMapper
 import com.example.coursework.model.character.ModelCharacterApp
+import com.example.coursework.model.character.ResultCharacter
 import com.example.domain.usecases.byApi.filter.FilterCharactersByApiUseCase
 import com.example.domain.usecases.byApi.find.FindCharactersByApiUseCase
 import com.example.domain.usecases.byApi.get.GetCharacktersByApiUseCase
@@ -33,13 +34,12 @@ class CharactersViewModel(
 
     fun get(isConnected: Boolean) {
         if(isConnected){
-            val disposable =getCharacktersUseCase.execute()
-                .map { CharactersDomainToAppMapper.map(it) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ handleData(it) }, { handleError(it) })
-
-            cdisposable.add(disposable)
+                val disposable =getCharacktersUseCase.execute()
+                    .map { CharactersDomainToAppMapper.map(it) }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ handleData(it) }, { handleError(it) })
+                cdisposable.add(disposable)
         }
         else{
             val disposable =getCharactersByDbuseCase.execute()

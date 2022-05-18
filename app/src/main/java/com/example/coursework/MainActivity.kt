@@ -3,7 +3,9 @@ package com.example.coursework
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.coursework.baseFragments.EpisodesFragment
 import com.example.coursework.baseFragments.LocationFragment
 import com.example.coursework.baseFragments.СharactersFragment
@@ -25,12 +27,51 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), CharacterClickListener, EpisodeClickListener,
     LocationItemClickListener, LocationClickListener {
 
+    val fragmentListener =
+        object :FragmentManager.FragmentLifecycleCallbacks(){
+            override fun onFragmentViewCreated(
+                fm: FragmentManager,
+                f: Fragment,
+                v: View,
+                savedInstanceState: Bundle?
+            ) {
+                super.onFragmentViewCreated(fm, f, v, savedInstanceState)
+                updateUi()
+            }
+        }
+
+
+    private fun updateUi() {
+        val fr = supportFragmentManager.findFragmentById(R.id.frame)
+        if(fr is DetailsCharactersFragment || fr is DetailsEpisodesFragment ||fr is DetailsLocationsFragment  ){
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }else{
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_CourseWork)
         setContentView(R.layout.activity_main)
-        replaceFragment(СharactersFragment.newInstance())
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(
+                    R.id.frame,
+                    СharactersFragment(),
+                    "ADD FIRST FRAGMENT"
+                ).commit()
+        } else {
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                supportFragmentManager.popBackStack("ADD FIRST FRAGMENT", 0)
+            } else {
+                val backEntry: FragmentManager.BackStackEntry =
+                    supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
+                val tag = backEntry.name
+                supportFragmentManager.popBackStack(tag, 0)
+            }
+        }
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
         bottom_nav.setOnItemSelectedListener(object : NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.itemId) {
@@ -61,7 +102,6 @@ class MainActivity : AppCompatActivity(), CharacterClickListener, EpisodeClickLi
                     title = "DetailsLocation"
                     addToBackStack(DetailsLocationsFragment.DETAILS_LOCATIONS_FRAGMENT_TAG)
                 }
-
             }
             replace(R.id.frame, fragment)
             commit()
@@ -88,4 +128,6 @@ class MainActivity : AppCompatActivity(), CharacterClickListener, EpisodeClickLi
         onBackPressed()
         return true
     }
+
+
 }

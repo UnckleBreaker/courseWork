@@ -32,6 +32,7 @@ android {
 
 dependencies {
 
+
     //RxJava2
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
 
