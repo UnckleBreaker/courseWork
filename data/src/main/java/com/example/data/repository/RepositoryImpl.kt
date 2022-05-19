@@ -1,9 +1,7 @@
 package com.example.data.repository
 
 import android.content.Context
-import android.util.Log
 import com.example.data.api.rep.CharacterApiService
-import com.example.data.api.rep.CharacterRepositoryApi
 import com.example.data.api.rep.EpisodesApiService
 import com.example.data.api.rep.LocationsApiService
 import com.example.data.db.AppDataBase
