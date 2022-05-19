@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeLayout_locations"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_locations"
+                android:background="@color/white">
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/progress_bar_location"
+                android:layout_height="wrap_content">
+            </ProgressBar>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/filter"
+                android:id="@+id/float_filter_locations"
+                android:gravity="center"
+                android:layout_margin="15dp"
+                app:iconTint="@android:color/white"
+                app:icon="@drawable/ic_filter_foreground"
+                android:layout_gravity="bottom|right">
+            </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+
+            <include layout="@layout/fragments_load_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/error_layout_locations"
+                android:visibility="invisible">
+            </include>
+
+
+        </FrameLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
