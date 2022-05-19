@@ -1,3 +1,10 @@
+# Реализовано
+7 - Concurrency   
+8 - Network   
+9 - SQL   
+10 - MVVM/Clean architecture   
+13 - RxJava   
+14 - DI   
 # courseWork
 ## При реализации курсовой работы будет спользована архитектура MVVM с Clean Architecture   
  ### Приложение будет разделено на три слоя
