@@ -32,64 +32,6 @@ class DataModule {
         return RepositoryImpl(context, characterApi, episodeApi, locationApi, appDataBase)
     }
 
-//    @Singleton
-//    @Provides
-//    fun provideApiRepository(
-//        context: Context, charactersRequest: CharactersRequest,
-//        episodesRequest: EpisodesRequest, locationsRequest: LocationsRequest,appDataBase: AppDataBase
-//    ): ApiRepository {
-//        return RepositoryImpl(context = context, charactersRequest, episodesRequest, locationsRequest,appDataBase
-//        )
-//    }
-//    @Singleton
-//    @Provides
-//    fun provideDbRepository(context: Context, charactersRequestDb: CharactersRequestDb,
-//        episodesRequestDb: EpisodesRequestDb,
-//        locationsRequestDb: LocationsRequestDb,
-//        appDataBase: AppDataBase
-//    ): ApiRepository {
-//        return RepositoryImpl(context = context, null, null,
-//            null, appDataBase)
-//    }
-
-//    @Singleton
-//    @Provides
-//    fun provideCharactersRequestDb(context: Context): CharactersRequestDb {
-//        return CharactersRequestDb(context = context)
-//    }
-
-//    @Singleton
-//    @Provides
-//    fun provideEpisodesRequestDb(context: Context): EpisodesRequestDb {
-//        return EpisodesRequestDb(context = context)
-//    }
-
-//    @Singleton
-//    @Provides
-//    fun provideLocationsRequestDb(context: Context): LocationsRequestDb {
-//        return LocationsRequestDb(context = context)
-//    }
-
-//    @Singleton
-//    @Provides
-//    fun provideCharactersRequestApi(): CharactersRequest {
-//        return CharactersRequest()
-//    }
-//
-//    @Singleton
-//    @Provides
-//    fun provideEpisodesRequestApi(): EpisodesRequest {
-//        return EpisodesRequest()
-//    }
-
-
-
-//    @Singleton
-//    @Provides
-//    fun provideLocationsRequestApi(): LocationsRequest {
-//        return LocationsRequest()
-//    }
-
     @Provides
     @Singleton
     fun provideDatabase(context: Context): AppDataBase {
@@ -99,16 +41,6 @@ class DataModule {
             "rick_and_morty"
         ).build()
     }
-
-//    @Provides
-//    @Singleton
-//    fun provideRetrofitBuilder(): Retrofit {
-//        return Retrofit.Builder()
-//            .baseUrl(Const.baseUrl)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//            .build()
-//    }
 
     @Singleton
     @Provides
