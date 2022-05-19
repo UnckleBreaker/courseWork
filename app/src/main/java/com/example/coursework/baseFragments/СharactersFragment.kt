@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.dialogFilters.DialogFilterCharacters
 import com.example.coursework.R
 import com.example.coursework.adatpters.CharactersAdapter
+import com.example.coursework.di.App
 import com.example.coursework.listeners.CharacterClickListener
 import com.example.coursework.listeners.dialog.DialogCharactersListener
 import com.example.coursework.service.CheckState
@@ -23,9 +24,12 @@ import com.example.coursework.viewmodels.CharactersViewModel
 import com.example.coursework.viewmodels.factories.CharactersViewModelFactory
 import kotlinx.android.synthetic.main.fragment_characters.*
 import kotlinx.android.synthetic.main.fragments_load_error.*
+import javax.inject.Inject
 
 class СharactersFragment : Fragment(R.layout.fragment_characters), DialogCharactersListener {
 
+    @Inject
+    lateinit var factory : CharactersViewModelFactory
     lateinit var vm: CharactersViewModel
     val itemAdapter: CharactersAdapter by lazy {
         CharactersAdapter(requireContext() as CharacterClickListener)
@@ -39,7 +43,8 @@ class СharactersFragment : Fragment(R.layout.fragment_characters), DialogCharac
         setHasOptionsMenu(true)
         activity?.actionBar?.setDisplayHomeAsUpEnabled(false)
         initRecycle()
-        vm = ViewModelProvider(this, CharactersViewModelFactory(requireContext())).get(CharactersViewModel::class.java)
+        (requireContext().applicationContext as App).appComponent.inject(this)
+        vm = ViewModelProvider(this, factory).get(CharactersViewModel::class.java)
         checkVisibility()
         vm.get(CheckState.isConnected(requireContext()))
         vm.data.observe(viewLifecycleOwner, Observer {

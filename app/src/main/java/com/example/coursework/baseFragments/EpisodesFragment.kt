@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.adatpters.EpisodeAdapter
+import com.example.coursework.di.App
 import com.example.coursework.dialogFilters.DialogFilterEpisodes
 import com.example.coursework.listeners.EpisodeClickListener
 import com.example.coursework.listeners.dialog.DialogEpisodesListener
@@ -21,9 +22,12 @@ import com.example.coursework.viewmodels.EpisodeViewModel
 import com.example.coursework.viewmodels.factories.EpisodesViewModelFactory
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import kotlinx.android.synthetic.main.fragments_load_error.*
+import javax.inject.Inject
 
 class EpisodesFragment : Fragment(R.layout.fragment_episodes),DialogEpisodesListener {
 
+    @Inject
+    lateinit var factory: EpisodesViewModelFactory
     lateinit var vm : EpisodeViewModel
     val itemAdapter: EpisodeAdapter by lazy {
         EpisodeAdapter(requireContext() as EpisodeClickListener)
@@ -37,8 +41,8 @@ class EpisodesFragment : Fragment(R.layout.fragment_episodes),DialogEpisodesList
         activity?.actionBar?.setDisplayHomeAsUpEnabled(false)
         setHasOptionsMenu(true)
         initRecycle()
-        vm = ViewModelProvider(this, EpisodesViewModelFactory(requireContext())).get(
-            EpisodeViewModel::class.java)
+        (requireContext().applicationContext as App).appComponent.inject(this)
+        vm = ViewModelProvider(this, factory).get(EpisodeViewModel::class.java)
         checkVisibility()
         vm.get(CheckState.isConnected(requireContext()))
         vm.data.observe(viewLifecycleOwner, Observer {

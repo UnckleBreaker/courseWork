@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.adatpters.LocationAdapter
+import com.example.coursework.di.App
 import com.example.coursework.dialogFilters.DialogFilterLocations
 import com.example.coursework.listeners.LocationItemClickListener
 import com.example.coursework.listeners.dialog.DialogLocationsListener
@@ -21,9 +22,12 @@ import com.example.coursework.viewmodels.LocationsViewModel
 import com.example.coursework.viewmodels.factories.LocationsViewModelFactory
 import kotlinx.android.synthetic.main.fragment_locations.*
 import kotlinx.android.synthetic.main.fragments_load_error.*
+import javax.inject.Inject
 
 class LocationFragment : Fragment(R.layout.fragment_locations),DialogLocationsListener {
 
+    @Inject
+    lateinit var factory : LocationsViewModelFactory
     lateinit var vm: LocationsViewModel
     val itemAdapter: LocationAdapter by lazy {
         LocationAdapter(requireContext() as LocationItemClickListener)
@@ -37,8 +41,8 @@ class LocationFragment : Fragment(R.layout.fragment_locations),DialogLocationsLi
         activity?.actionBar?.setDisplayHomeAsUpEnabled(false)
         setHasOptionsMenu(true)
         initRecycle()
-        super.onViewCreated(view, savedInstanceState)
-        vm = ViewModelProvider(this, LocationsViewModelFactory(requireContext())).get(
+        (requireContext().applicationContext as App).appComponent.inject(this)
+        vm = ViewModelProvider(this, factory).get(
             LocationsViewModel::class.java
         )
         checkVisibility()

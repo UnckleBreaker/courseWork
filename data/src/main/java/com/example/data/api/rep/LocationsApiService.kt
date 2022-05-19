@@ -8,16 +8,16 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface LocationsApiService {
-    @GET("api/location")
+    @GET("location")
     fun getAllLocations(): Single<ResponceLocations>
 
-    @GET("api/location/{id}")
+    @GET("location/{id}")
     fun getOneLocation(@Path("id") id:String):Single<Result>
 
-    @GET("api/location/?")
+    @GET("location/?")
     fun findLocations(@Query("name") search: String): Single<ResponceLocations>
 
-    @GET("api/location/?")
+    @GET("location/?")
     fun filterLocations(@Query("name",) search: String,
                         @Query("type",) type: String,
                         @Query("dimension",) dimension: String): Single<ResponceLocations>

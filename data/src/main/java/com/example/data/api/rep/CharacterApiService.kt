@@ -7,17 +7,18 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+
 interface CharacterApiService {
-    @GET("api/character")
+    @GET("character")
     fun getAllCharacters():Single<ResponceCharacters>
 
-    @GET("api/character/{ids}")
+    @GET("character/{ids}")
     fun getSomeCharacters(@Path("ids") ids: String): Single<List<Result>>
 
-    @GET("api/character/?")
+    @GET("character/?")
     fun findCharacters(@Query("name") search: String): Single<ResponceCharacters>
 
-    @GET("api/character/?")
+    @GET("character/?")
     fun filterCharacters(@Query("status") status: String,
                          @Query("species") species: String,
                          @Query("type") type: String,

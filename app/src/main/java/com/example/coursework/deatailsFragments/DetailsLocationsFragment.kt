@@ -12,15 +12,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.adatpters.CharactersAdapter
+import com.example.coursework.di.App
 import com.example.coursework.listeners.CharacterClickListener
 import com.example.coursework.listeners.LocationClickListener
 import com.example.coursework.model.DetailsLocationFragmentArguments
 import com.example.coursework.viewmodels.DetailsLocationsViewModel
 import com.example.coursework.viewmodels.factories.DetailsLocationViewModelFactory
 import kotlinx.android.synthetic.main.fragment_details_location.*
+import javax.inject.Inject
 
 class DetailsLocationsFragment : Fragment(R.layout.fragment_details_location) {
-
+    @Inject
+    lateinit var factory:DetailsLocationViewModelFactory
     lateinit var vm: DetailsLocationsViewModel
     val charactersAdapter by lazy { CharactersAdapter(requireContext() as CharacterClickListener) }
 
@@ -39,9 +42,8 @@ class DetailsLocationsFragment : Fragment(R.layout.fragment_details_location) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
         initRecycle()
-        vm = ViewModelProvider(this, DetailsLocationViewModelFactory(requireContext())).get(
-            DetailsLocationsViewModel::class.java
-        )
+        (requireContext().applicationContext as App).appComponent.inject(this)
+        vm = ViewModelProvider(this, factory).get(DetailsLocationsViewModel::class.java)
         checkVisibility()
         showBundel()
         vm.dataList.observe(viewLifecycleOwner, Observer {

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.adatpters.CharactersAdapter
+import com.example.coursework.di.App
 import com.example.coursework.listeners.CharacterClickListener
 import com.example.coursework.model.episode.ResultEpisode
 import com.example.coursework.viewmodels.DetailsCharactersViewModel
@@ -21,8 +22,11 @@ import com.example.coursework.viewmodels.factories.DetailsCharacterViewModelFact
 import com.example.coursework.viewmodels.factories.DetailsEpisodesViewModelFactory
 import kotlinx.android.synthetic.main.fragment_details_character.*
 import kotlinx.android.synthetic.main.fragment_details_episode.*
+import javax.inject.Inject
 
 class DetailsEpisodesFragment : Fragment(R.layout.fragment_details_episode) {
+    @Inject
+    lateinit var factory : DetailsEpisodesViewModelFactory
     lateinit var vm: DetailsEpisodesViewModel
     val adapter: CharactersAdapter by lazy {
         CharactersAdapter(requireContext() as CharacterClickListener)
@@ -38,9 +42,8 @@ class DetailsEpisodesFragment : Fragment(R.layout.fragment_details_episode) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
-        vm = ViewModelProvider(this, DetailsEpisodesViewModelFactory(requireContext())).get(
-            DetailsEpisodesViewModel::class.java
-        )
+        (requireContext().applicationContext as App).appComponent.inject(this)
+        vm = ViewModelProvider(this, factory).get(DetailsEpisodesViewModel::class.java)
         checkVisibility()
         initRecycle()
         showBundel()

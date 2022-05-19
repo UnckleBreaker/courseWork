@@ -8,16 +8,16 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface EpisodesApiService {
-    @GET("api/episode")
+    @GET("episode")
     fun getAllEpisodes():Single<ResponceEpisode>
 
-    @GET("api/episode/{ids}")
+    @GET("episode/{ids}")
     fun getSomeEpisodes(@Path("ids") ids:String):Single<List<Result>>
 
-    @GET("api/episode/?")
+    @GET("episode/?")
     fun findEpisode(@Query("name")search: String): Single<ResponceEpisode>
 
-    @GET("api/episode/?")
+    @GET("episode/?")
     fun filterEpisode(@Query("name")search: String,
                       @Query("episode")episode: String): Single<ResponceEpisode>
 }

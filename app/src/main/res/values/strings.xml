@@ -2,8 +2,8 @@
     <string name="app_name">CourseWork</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="couldn_t_fetch_data">Sorry! Couldn`t fetch data</string>
-    <string name="filter">Filter</string>
-    <string name="type">Type</string>
+    <string name="filter_1">Filter</string>
+    <string name="type_1">Type</string>
     <string name="species">Species</string>
     <string name="female">Female</string>
     <string name="male">Male</string>
@@ -14,15 +14,15 @@
     <string name="dead">Dead</string>
     <string name="uncnown">Uncnown</string>
     <string name="status">Status</string>
-    <string name="apply">Apply</string>
+    <string name="apply_1">Apply</string>
     <string name="type">Type</string>
-    <string name="name">Name</string>
-    <string name="apply">Apply</string>
+    <string name="name_1">Name</string>
+    <string name="apply_">Apply</string>
     <string name="dimension">Dimension</string>
     <string name="episode">Episode</string>
     <string name="name">Name</string>
     <string name="apply">Apply</string>
-    <string name="filter">Filter</string>
+    <string name="filter_2">Filter</string>
     <string name="filter">Filter</string>
     <string-array name="gender">
         <item>Male</item>
